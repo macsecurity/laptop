@@ -61,6 +61,35 @@ rosetta() {
   uname -m | grep "x86_64"
 }
 
+homebrew_installed_on_m1() {
+  apple_m1 && ! rosetta && [ -d "/opt/homebrew" ]
+}
+
+homebrew_installed_on_intel() {
+  ! apple_m1 && command -v brew >/dev/null
+}
+
+install_or_update_homebrew() {
+  if homebrew_installed_on_m1 || homebrew_installed_on_intel; then
+    update_homebrew
+  else
+    install_homebrew
+  fi
+}
+
+install_homebrew() {
+  fancy_echo "Installing Homebrew ..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  configure_shell_file_for_homebrew
+}
+
+update_homebrew() {
+  fancy_echo "Homebrew already installed. Updating Homebrew ..."
+  configure_shell_file_for_homebrew
+  brew update
+}
+
 check_processor_and_set_chruby_source_strings() {
   if apple_m1 && ! rosetta; then
     chruby_source_string="source /opt/homebrew/opt/chruby/share/chruby/chruby.sh"
@@ -88,7 +117,7 @@ configure_shell_file_for_homebrew_on_m1() {
     # shellcheck disable=SC2016
     append_to_file "$HOME/.zprofile" 'eval $(/opt/homebrew/bin/brew shellenv)'
   fi
-  eval $(/opt/homebrew/bin/brew shellenv)
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 configure_shell_file_for_chruby() {
@@ -210,7 +239,7 @@ fancy_echo "CPU architecture:"
 uname -m
 
 fancy_echo "shell file contents:"
-cat $shell_file
+cat "$shell_file"
 fancy_echo "End of shell file contents."
 
 if [ -f "$HOME/.zprofile" ]; then
@@ -225,16 +254,7 @@ fancy_echo "End of gem env."
 
 fancy_echo "End of debugging"
 
-if ! command -v brew >/dev/null; then
-  fancy_echo "Installing Homebrew ..."
-     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    configure_shell_file_for_homebrew
-else
-  fancy_echo "Homebrew already installed. Updating Homebrew ..."
-  configure_shell_file_for_homebrew
-  brew update
-fi
+install_or_update_homebrew
 
 fancy_echo "Ruby installed with Homebrew?"
 if brew_is_installed "ruby"; then
@@ -341,12 +361,12 @@ gem install jekyll
 
 fancy_echo '...Finished Ruby installation checks.'
 
-fancy_echo "Installing node 14.17.0 ..."
-if nodenv versions | grep 14.17.0; then
-  fancy_echo "node 14.17.0 already installed."
+fancy_echo "Installing node 14.17.6 ..."
+if nodenv versions | grep 14.17.6; then
+  fancy_echo "node 14.17.6 already installed."
 else
   brew upgrade node-build
-  nodenv install 14.17.0
+  nodenv install 14.17.6
 fi
 fancy_echo 'Configuring Nodenv...'
 configure_shell_file_for_nodenv
@@ -358,7 +378,7 @@ fi
 
 fancy_echo 'All done!'
 fancy_echo 'Now make sure to quit and restart your terminal!'
-fancy_echo 'If you found this script valuable, join the 1000+ people on my list'
+fancy_echo 'If you found this script valuable, join the 1900+ people on my list'
 echo "who are becoming confident coders:"
 fancy_echo "https://www.moncefbelyamani.com/newsletter"
 echo " "
