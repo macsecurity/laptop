@@ -6,6 +6,7 @@ brew 'bison'
 brew 'gdbm'
 brew 'libffi'
 brew 'libyaml'
+brew 'openssl@1.1'
 brew 'readline'
 
 brew 'git'
