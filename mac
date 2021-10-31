@@ -54,11 +54,11 @@ create_fish_config_and_set_it_as_shell_file() {
 }
 
 apple_m1() {
-  sysctl -n machdep.cpu.brand_string | grep "Apple M1"
+  sysctl -n machdep.cpu.brand_string | grep -q "Apple M1"
 }
 
 rosetta() {
-  uname -m | grep "x86_64"
+  uname -m | grep -q "x86_64"
 }
 
 homebrew_installed_on_m1() {
@@ -211,6 +211,7 @@ fi
 fancy_echo 'Welcome to the monfresh laptop script!'
 fancy_echo 'You should be and up and running with a working Ruby environment in a few minutes.'
 fancy_echo 'The following lines are to help me debug any issues:'
+fancy_echo "=================Start of debugging====================="
 fancy_echo "Current shell: $SHELL"
 fancy_echo "Current PATH: $PATH"
 # fancy_echo "xcode-select path:"
@@ -252,16 +253,16 @@ fancy_echo "gem env:"
 gem env
 fancy_echo "End of gem env."
 
-fancy_echo "End of debugging"
-
-install_or_update_homebrew
-
 fancy_echo "Ruby installed with Homebrew?"
 if brew_is_installed "ruby"; then
   echo "yes"
 else
   echo "no"
 fi
+
+fancy_echo "=================End of debugging====================="
+
+install_or_update_homebrew
 
 # Remove brew-cask since it is now installed as part of brew tap caskroom/cask.
 # See https://github.com/caskroom/homebrew-cask/releases/tag/v0.60.0
@@ -361,12 +362,12 @@ gem install jekyll
 
 fancy_echo '...Finished Ruby installation checks.'
 
-fancy_echo "Installing node 14.17.6 ..."
-if nodenv versions | grep 14.17.6; then
-  fancy_echo "node 14.17.6 already installed."
+fancy_echo "Installing node 16.13.0 ..."
+if nodenv versions | grep -q 16.13.0; then
+  fancy_echo "node 16.13.0 already installed."
 else
   brew upgrade node-build
-  nodenv install 14.17.6
+  nodenv install 16.13.0
 fi
 fancy_echo 'Configuring Nodenv...'
 configure_shell_file_for_nodenv

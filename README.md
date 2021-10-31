@@ -178,9 +178,9 @@ and then you install 2.7.3 later, you'll have to install jekyll again in 2.7.3.
 To verify if Node was installed and configured:
 
 ```shell
-node --version
+nodenv versions
 ```
-You should see `v14.17.0` or later
+You should see `v16.13.0` or later listed
 
 ```shell
 nodenv help
