@@ -12,8 +12,7 @@ the script to install additional tools.
 
 ## More goodies
 
-- Join the 1200+ people on my list who are becoming confident coders through my [weekly coding guides](https://www.moncefbelyamani.com/newsletter) and exclusive tutorials and courses.
-- For a more minimal script that only installs Ruby (with chruby and ruby-install), check out my [install-ruby-on-macos](https://github.com/monfresh/install-ruby-on-macos) script.
+- Join the 2400+ people on my list who are becoming confident coders through my [weekly coding guides](https://www.moncefbelyamani.com/newsletter) and exclusive tutorials and courses.
 
 ## What's supported
 
