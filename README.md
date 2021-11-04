@@ -25,10 +25,10 @@ Supported macOS versions:
 
 - Big Sur
 - Catalina
-- Mojave
 
 Unsupported operating systems. Give it a shot, but I can't guarantee it will work.
 
+- macOS Mojave (10.14)
 - macOS High Sierra (10.13)
 - macOS Sierra (10.12)
 - OS X El Capitan (10.11)
