@@ -117,7 +117,7 @@ keyboard shortcut for invoking Spotlight is `command-Space`. Once Spotlight
 is up, just start typing the first few letters of the app you are looking for,
 and once it appears, press `return` to launch it.
 
-In your Terminal window, copy and paste one of the commands below, then press `return`.
+In your Terminal window, choose **ONE** of the options below, and copy and paste the command, then press `return`.
 
 #### The recommended default installation for most people
 
