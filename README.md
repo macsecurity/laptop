@@ -2,13 +2,70 @@
 
 [![Build Status](https://travis-ci.org/monfresh/laptop.svg)](https://travis-ci.org/monfresh/laptop)
 
-Laptop is a script that will set up a complete Ruby web development environment on your Mac. It also automatically installs the Jekyll and Rails gems.
+Laptop is a script that will set up a complete Ruby web development environment on your Mac, including Node, Postgres, Rails, and Jekyll. You also have the option to skip those web dev tools and only install the minimum required to use Ruby.
 
 It can be run multiple times on the same machine safely. It installs,
 upgrades, or skips packages based on what is already installed on the machine.
 
 You can also easily [customize](#customize-in-laptoplocal-and-brewfilelocal)
 the script to install additional tools.
+
+## Table of Contents
+
+<!-- MarkdownTOC autolink="true" -->
+
+- [What problem does this script solve?](#what-problem-does-this-script-solve)
+- [More goodies](#more-goodies)
+- [What's supported](#whats-supported)
+- [Install](#install)
+    - [Check prerequisites](#check-prerequisites)
+    - [If you are on an M1 Mac, do not use Rosetta](#if-you-are-on-an-m1-mac-do-not-use-rosetta)
+    - [Quit and relaunch Terminal after running my script](#quit-and-relaunch-terminal-after-running-my-script)
+    - [Now on to the installation](#now-on-to-the-installation)
+        - [The recommended default installation for most people](#the-recommended-default-installation-for-most-people)
+        - [The minimal installation for those that only want Ruby and nothing else](#the-minimal-installation-for-those-that-only-want-ruby-and-nothing-else)
+- [Debugging script failures](#debugging-script-failures)
+- [How to tell if the script worked](#how-to-tell-if-the-script-worked)
+- [How to create a new Rails app](#how-to-create-a-new-rails-app)
+- [How to create a new Jekyll site](#how-to-create-a-new-jekyll-site)
+- [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
+- [Check the Node installation](#check-the-node-installation)
+- [Next steps](#next-steps)
+- [Why chruby and not RVM or rbenv?](#why-chruby-and-not-rvm-or-rbenv)
+- [What it sets up](#what-it-sets-up)
+- [Customize in `~/.laptop.local` and `~/Brewfile.local`](#customize-in-~laptoplocal-and-~brewfilelocal)
+- [How to manage background services \(such as Postgres\)](#how-to-manage-background-services-such-as-postgres)
+- [Note about the fish shell](#note-about-the-fish-shell)
+- [Credits](#credits)
+    - [Public domain](#public-domain)
+
+<!-- /MarkdownTOC -->
+
+
+## What problem does this script solve?
+Installing Ruby and/or gems is a common source of confusion and frustration.
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)" in your favorite search engine, and you will see pages and pages of results.
+
+To make matters worse, the vast majority of suggestions are bad advice and
+incomplete. The reason for the error message above is because people are trying
+to install gems using the version of Ruby that comes pre-installed by Apple.
+That error message is there for a reason: you should not modify macOS system
+files. A common suggestion is to bypass that security protection by using
+`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/) and can cause issues down the line that are hard to undo.
+
+The recommended way of using Ruby on a Mac is to install a newer (the
+macOS version is often outdated and is only updated during a major release),
+separate version in a different folder than the one that comes by default on
+macOS. The best and most flexible way to do that is with a Ruby manager. The
+most popular ones are: RVM, rbenv, chruby, and asdf. I have chosen `chruby` in this script. See [below](#Why-chruby-and-not-RVM-or-rbenv) for my reasons. There are different ways to
+install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/), such as `.bash_profile` or `.zshrc`.
+
+When attempting to install and configure a Ruby manager manually, it's easy to
+miss or fumble a step due to human error or incomplete or outdated instructions. 
+
+Since all of the steps are automatable, **the best and most reliable way to set up Ruby on a Mac is to run this script**. I test it regularly on my spare laptop where I delete the hard drive and install fresh versions of macOS. If you've already attempted to set up a development environment on your Mac, and you run into issues with my script, please read through the entire [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) section, which includes a link to troubleshoot issues. If that doesn't help, feel free to open an issue, and I will do my best to help you.
+
+Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
 
 ## More goodies
 
@@ -60,10 +117,18 @@ keyboard shortcut for invoking Spotlight is `command-Space`. Once Spotlight
 is up, just start typing the first few letters of the app you are looking for,
 and once it appears, press `return` to launch it.
 
-In your Terminal window, copy and paste the command below, then press `return`.
+In your Terminal window, copy and paste one of the commands below, then press `return`.
+
+#### The recommended default installation for most people
 
 ```sh
 bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)
+```
+
+#### The minimal installation for those that only want Ruby and nothing else
+
+```sh
+ONLY_RUBY=true bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)
 ```
 
 The [script](https://github.com/monfresh/laptop/blob/master/mac) itself is
@@ -100,10 +165,10 @@ To verify that the Ruby environment is properly configured, run these commands:
 ruby -v
 ```
 
-This should show `ruby 2.7.3` or `ruby 3.0.1`. If not, try switching manually to 2.7.3:
+This should show `ruby 2.7.4` or `ruby 3.0.2`. If not, try switching manually to 2.7.4:
 
 ```shell
-chruby 2.7.3
+chruby 2.7.4
 ```
 
 and check the version to double check:
@@ -121,7 +186,7 @@ which ruby
 This should point to the `.rubies` directory in your home folder. For example:
 
 ```
-/Users/monfresh/.rubies/ruby-2.7.3/bin/ruby
+/Users/monfresh/.rubies/ruby-2.7.4/bin/ruby
 ```
 
 ## How to create a new Rails app
@@ -134,43 +199,42 @@ Similarly to Rails, [creating a new Jekyll site](https://www.moncefbelyamani.com
 
 ## How to switch between Ruby versions and install different versions
 
-The first time you run the script (assuming you didn't already have `chruby` installed), it will install Ruby 2.7.3, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer versions, and it will install Ruby 3.0.1 or later. You will still have Ruby 2.7.3. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
+The first time you run the script, it will install both the latest Ruby (currently 3.0.2) as well as Ruby 2.7.4, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer 3.x versions, and if it finds one, it will install it. You will still have Ruby 2.7.4. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
 
-**Ruby 3.0 is still very new, so it's not yet fully compatible with gems like Rails or Jekyll. So, before you create a new Rails app or Jekyll site, make sure you're using Ruby 2.7.3. Keep reading for instructions.**
+**Ruby 3.0 is still very new, so it's not yet fully compatible with gems like Rails or Jekyll. So, before you create a new Rails app or Jekyll site, make sure you're using Ruby 2.7.4. Keep reading for instructions.**
 
-To check if you have Ruby 2.7.3 installed, run this command:
+To check if you have Ruby 2.7.4 installed, run this command:
 
 ```shell
-find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.3'
+find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.4'
 ```
 If nothing is returned, then you should install it:
 
 ```shell
-ruby-install ruby-2.7.3
+ruby-install ruby-2.7.4
 ```
 
 To switch to this newly-installed version, run `chruby` followed by the version. For example:
 
 ```shell
-chruby 2.7.3
+chruby 2.7.4
 ```
-You should run `chruby 2.7.3` before you start any new project to make sure you are using the correct version of Ruby.
+You should run `chruby 2.7.4` before you start any new project to make sure you are using the correct version of Ruby.
 
-Another highly-recommended way to automatically switch between versions is to add a `.ruby-version` file in your Ruby project with the version number prefixed with `ruby-`, such as `ruby-2.7.3`. To test that this works:
+Another highly-recommended way to automatically switch between versions is to add a `.ruby-version` file in your Ruby project with the version number prefixed with `ruby-`, such as `ruby-2.7.4`. To test that this works:
 
 1. `cd` into your Ruby project, such as your Rails app or Jekyll site
 2. First, check to see if the file already exists: `cat .ruby-version`. If not, then create it in the next step.
-2. Create a file called `.ruby-version` with `ruby-2.7.3` in it:
+2. Create a file called `.ruby-version` with `ruby-2.7.4` in it:
     ```shell
-    echo 'ruby-2.7.3' >> .ruby-version
+    echo 'ruby-2.7.4' >> .ruby-version
     ```
 1. `cd` into a folder outside of your project, such as your home folder: `cd ~`
 2. Run `ruby -v`. It will probably say `2.6.3p62`, which is the Ruby that came preinstalled on your Mac.
 4. `cd` into your project
-5. Verify that `ruby -v` shows `2.7.3p183`
+5. Verify that `ruby -v` shows `2.7.4p191`
 
-Note that gems only get installed in a specific version of Ruby at a time. If you installed jekyll in 3.0.1,
-and then you install 2.7.3 later, you'll have to install jekyll again in 2.7.3.
+Note that gems only get installed in a specific version of Ruby at a time. If you installed jekyll in 3.0.2, and then you install 2.7.4 later, you'll have to install jekyll again in 2.7.4.
 
 ## Check the Node installation
 
@@ -192,10 +256,7 @@ The next thing you'll want to do after running the script is to [configure Git w
 
 ## Why chruby and not RVM or rbenv?
 
-This script used `RVM` at first, but it started causing problems, so I switched to
-`chruby`, and haven't had any issues since. `chruby` is also is the simplest, most
-reliable, and easiest to understand. I like that it does not do some of the things
-that other Ruby managers do:
+This script used `RVM` at first, but it started causing problems, so I switched to `chruby`, and haven't had any issues since. `chruby` is also the simplest, most reliable, and easiest to understand. I like that it does not do some of the things that other Ruby managers do:
 
 - Does not hook `cd`.
 - Does not install executable shims.
@@ -268,7 +329,6 @@ above to get started. It lets you install the following tools and Mac apps:
 - [Flux] for adjusting your Mac's display color so you can sleep better
 - [GitHub Desktop] for working with your repos using a GUI
 - [iTerm2] - an awesome replacement for the macOS Terminal
-- [Nova] - Panic's new macOS native code editor
 - [Redis] for storing key-value data
 - [Sublime Text 3] - a solid and fast code editor
 - [Visual Studio Code] - Microsoft's popular code editor
@@ -277,7 +337,6 @@ above to get started. It lets you install the following tools and Mac apps:
 [flux]: https://justgetflux.com/
 [github desktop]: https://desktop.github.com/
 [iterm2]: https://iterm2.com/
-[nova]: https://nova.app/
 [redis]: https://redis.io/
 [sublime text 3]: https://www.sublimetext.com/3
 [visual studio code]: https://code.visualstudio.com/
@@ -291,8 +350,7 @@ in your `~/.laptop.local`.
 If you want to skip running `.laptop.local`, you can set the `SKIP_LOCAL` environment variable to `true` before running `laptop`:
 
 ```shell
-export SKIP_LOCAL=true
-laptop
+SKIP_LOCAL=true laptop
 ```
 
 ## How to manage background services (such as Postgres)
