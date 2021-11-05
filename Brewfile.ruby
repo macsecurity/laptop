@@ -1,5 +1,3 @@
-cask_args appdir: '/Applications'
-
 # Required for Ruby installation
 brew 'automake'
 brew 'bison'
@@ -12,15 +10,3 @@ brew 'chruby'
 brew 'ruby-install'
 
 brew 'git'
-
-tap 'heroku/brew'
-brew 'heroku'
-
-tap 'homebrew/services'
-brew 'postgresql'
-
-brew 'gh'
-
-# For Node
-brew 'nodenv'
-brew 'yarn'

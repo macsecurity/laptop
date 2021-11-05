@@ -142,7 +142,7 @@ configure_shell_file_for_nodenv() {
 # shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
-set -e
+set -e -o pipefail
 
 if [ ! -d "$HOME/.bin/" ]; then
   mkdir "$HOME/.bin"
@@ -164,10 +164,6 @@ brew_is_installed() {
   brew list -1 --formula | grep -Fqx "$1"
 }
 
-tap_is_installed() {
-  brew tap | grep -Fqx "$1"
-}
-
 gem_install_or_update() {
   if gem list "$1" | grep "^$1 ("; then
     fancy_echo "Updating %s ..." "$1"
@@ -182,8 +178,8 @@ latest_installed_ruby() {
   find "$HOME/.rubies" -maxdepth 1 -name 'ruby-*' -print0 | sort -z | xargs -0 | grep -E -o '\d+\.\d+\.\d+' | tail -n1
 }
 
-ruby_2_7_2_is_installed() {
-  find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.3'
+ruby_2_7_4_is_installed() {
+  find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.4'
 }
 
 switch_to_ruby() {
@@ -199,7 +195,9 @@ switch_to_ruby() {
 }
 
 
-if [[ ! $SHELL == *fish ]]; then
+if [[ $SHELL == *fish ]]; then
+  append_to_file "$shell_file" "alias laptop='bash (curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop | psub)'"
+else
   append_to_file "$shell_file" "alias laptop='bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)'"
 fi
 
@@ -264,16 +262,6 @@ fancy_echo "=================End of debugging====================="
 
 install_or_update_homebrew
 
-# Remove brew-cask since it is now installed as part of brew tap caskroom/cask.
-# See https://github.com/caskroom/homebrew-cask/releases/tag/v0.60.0
-if brew_is_installed 'brew-cask'; then
-  brew uninstall --force 'brew-cask'
-fi
-
-if tap_is_installed 'caskroom/versions'; then
-  brew untap caskroom/versions
-fi
-
 fancy_echo "Verifying the Homebrew installation..."
 if brew doctor; then
   fancy_echo "Your Homebrew installation is good to go."
@@ -282,13 +270,18 @@ else
   echo "Review the Homebrew messages to see if any action is needed."
 fi
 
+if [ -z "${ONLY_RUBY:-}" ]; then
+  brewfile="Brewfile"
+  echo "Installing everything..."
+else
+  brewfile="Brewfile.ruby"
+fi
+
 fancy_echo "Installing formulas and casks from the Brewfile ..."
-if brew bundle --file="$HOME/Brewfile"; then
+if brew bundle --file="$brewfile"; then
   fancy_echo "All formulas and casks were installed successfully."
 else
   fancy_echo "Some formulas or casks failed to install."
-  echo "This is usually due to one of the Mac apps being already installed,"
-  echo "in which case, you can ignore these errors."
 fi
 
 # shellcheck disable=SC2016
@@ -301,51 +294,33 @@ if command -v rbenv >/dev/null || command -v rvm >/dev/null; then
   echo "Please uninstall RVM or rbenv, and remove any related lines from $shell_file, then run this script again."
   echo "To uninstall RVM, run 'rvm implode'. To uninstall rbenv, follow the instructions here: https://github.com/rbenv/rbenv#uninstalling-rbenv"
 else
-  if ! brew_is_installed "chruby"; then
-    fancy_echo 'Installing chruby, ruby-install, and Ruby 2.7.3 ...'
+  fancy_echo 'Checking if a newer version of Ruby is available...'
 
-    brew bundle --file=- <<EOF
-    brew 'chruby'
-    brew 'ruby-install'
-EOF
+  ruby-install --latest > /dev/null
+  latest_stable_ruby="$(cat < "$HOME/.cache/ruby-install/ruby/stable.txt" | tail -n1)"
 
-    ruby-install ruby-2.7.3 -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
-    configure_shell_file_for_chruby "2.7.3"
-    switch_to_ruby "2.7.3"
+  if ! [ "$latest_stable_ruby" = "$(latest_installed_ruby)" ]; then
+    fancy_echo "Installing latest stable Ruby version: $latest_stable_ruby"
+    ruby-install ruby -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
+    configure_shell_file_for_chruby "$(latest_installed_ruby)"
+    switch_to_ruby "$(latest_installed_ruby)"
   else
-    brew bundle --file=- <<EOF
-    brew 'chruby'
-    brew 'ruby-install'
-EOF
-
-    fancy_echo 'Checking if a newer version of Ruby is available...'
-
-    ruby-install --latest > /dev/null
-    latest_stable_ruby="$(cat < "$HOME/.cache/ruby-install/ruby/stable.txt" | tail -n1)"
-
-    if ! [ "$latest_stable_ruby" = "$(latest_installed_ruby)" ]; then
-      fancy_echo "Installing latest stable Ruby version: $latest_stable_ruby"
-      ruby-install ruby -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
-      configure_shell_file_for_chruby "$(latest_installed_ruby)"
-      switch_to_ruby "$(latest_installed_ruby)"
-    else
-      fancy_echo 'You have the latest version of Ruby'
-    fi
-
-    if ! [ "$(ruby_2_7_2_is_installed)" = "$HOME/.rubies/ruby-2.7.3" ]; then
-      fancy_echo "Installing Ruby 2.7.3 ..."
-      ruby-install ruby-2.7.3 -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
-      configure_shell_file_for_chruby "2.7.3"
-      switch_to_ruby "2.7.3"
-    fi
-
-    configure_shell_file_for_chruby "2.7.3"
+    fancy_echo 'You have the latest version of Ruby'
   fi
+
+  if ! [ "$(ruby_2_7_4_is_installed)" = "$HOME/.rubies/ruby-2.7.4" ]; then
+    fancy_echo "Installing Ruby 2.7.4 ..."
+    ruby-install ruby-2.7.4 -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
+    configure_shell_file_for_chruby "2.7.4"
+    switch_to_ruby "2.7.4"
+  fi
+
+  configure_shell_file_for_chruby "2.7.4"
 fi
 
 fancy_echo 'Updating Rubygems...'
-switch_to_ruby "2.7.3"
-gem update --system
+switch_to_ruby "2.7.4"
+gem update --system --silent
 
 fancy_echo 'Installing or updating Bundler'
 gem_install_or_update 'bundler'
@@ -354,32 +329,34 @@ fancy_echo "Configuring Bundler ..."
 number_of_cores=$(sysctl -n hw.ncpu)
 bundle config --global jobs $((number_of_cores - 1))
 
-fancy_echo 'Installing Rails'
-gem install rails
+if [ -z "${ONLY_RUBY:-}" ]; then
+  fancy_echo 'Installing Rails'
+  gem install rails
 
-fancy_echo 'Installing Jekyll'
-gem install jekyll
+  fancy_echo 'Installing Jekyll'
+  gem install jekyll
 
-fancy_echo '...Finished Ruby installation checks.'
+  fancy_echo '...Finished Ruby installation checks.'
 
-fancy_echo "Installing node 16.13.0 ..."
-if nodenv versions | grep -q 16.13.0; then
-  fancy_echo "node 16.13.0 already installed."
-else
-  brew upgrade node-build
-  nodenv install 16.13.0
-fi
-fancy_echo 'Configuring Nodenv...'
-configure_shell_file_for_nodenv
+  fancy_echo "Installing node 16.13.0 ..."
+  if nodenv versions | grep -q 16.13.0; then
+    fancy_echo "node 16.13.0 already installed."
+  else
+    brew upgrade node-build
+    nodenv install 16.13.0
+  fi
+  fancy_echo 'Configuring Nodenv...'
+  configure_shell_file_for_nodenv
 
-if [ -f "$HOME/.laptop.local" ] && ! [[ $SKIP_LOCAL == true ]]; then
-  # shellcheck source=/dev/null
-  . "$HOME/.laptop.local"
+  if [ -f "$HOME/.laptop.local" ] && [ -z "${SKIP_LOCAL:-}" ]; then
+    # shellcheck source=/dev/null
+    . "$HOME/.laptop.local"
+  fi
 fi
 
 fancy_echo 'All done!'
 fancy_echo 'Now make sure to quit and restart your terminal!'
-fancy_echo 'If you found this script valuable, join the 2000+ people on my list'
+fancy_echo 'If you found this script valuable, join the 2400+ people on my list'
 echo "who are becoming confident coders:"
 fancy_echo "https://www.moncefbelyamani.com/newsletter"
 echo " "
