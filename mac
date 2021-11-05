@@ -272,6 +272,7 @@ fi
 
 if [ -z "${ONLY_RUBY:-}" ]; then
   brewfile="Brewfile"
+  echo "Installing everything..."
 else
   brewfile="Brewfile.ruby"
 fi

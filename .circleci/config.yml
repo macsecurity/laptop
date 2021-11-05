@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  test:
+    macos:
+      xcode: 13.1.0
+    steps:
+      - checkout
+      # Commands will execute in macOS container
+      - run:
+          name: Lint script
+          command: |
+            brew install shellcheck
+            shellcheck mac
+      - run:
+          name: Uninstall tools
+          command: |
+            brew list
+            brew uninstall chruby ruby-install git
+            rm -rf ~/.rubies
+      - run: bash mac
+
+workflows:
+  version: 2
+  test_build:
+    jobs:
+      - test
