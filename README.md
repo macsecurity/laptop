@@ -80,6 +80,7 @@ Supported chips:
 
 Supported macOS versions:
 
+- Monterey
 - Big Sur
 - Catalina
 
