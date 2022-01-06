@@ -69,7 +69,7 @@ Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.
 
 ## More goodies
 
-- Join the 2400+ people on my list who are becoming confident coders through my [weekly coding guides](https://www.moncefbelyamani.com/newsletter) and exclusive tutorials and courses.
+- Join the 2803+ people on my list who are becoming confident coders through my [coding guides](https://www.moncefbelyamani.com/newsletter) and exclusive tutorials and courses.
 
 ## What's supported
 

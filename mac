@@ -338,12 +338,12 @@ if [ -z "${ONLY_RUBY:-}" ]; then
 
   fancy_echo '...Finished Ruby installation checks.'
 
-  fancy_echo "Installing node 16.13.0 ..."
-  if nodenv versions | grep -q 16.13.0; then
-    fancy_echo "node 16.13.0 already installed."
+  fancy_echo "Installing node 16.13.1 ..."
+  if nodenv versions | grep -q 16.13.1; then
+    fancy_echo "node 16.13.1 already installed."
   else
     brew upgrade node-build
-    nodenv install 16.13.0
+    nodenv install 16.13.1
   fi
   fancy_echo 'Configuring Nodenv...'
   configure_shell_file_for_nodenv
@@ -356,7 +356,7 @@ fi
 
 fancy_echo 'All done!'
 fancy_echo 'Now make sure to quit and restart your terminal!'
-fancy_echo 'If you found this script valuable, join the 2400+ people on my list'
+fancy_echo 'If you found this script valuable, join the 2800+ people on my list'
 echo "who are becoming confident coders:"
 fancy_echo "https://www.moncefbelyamani.com/newsletter"
 echo " "
