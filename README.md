@@ -14,7 +14,6 @@ the script to install additional tools.
 
 <!-- MarkdownTOC autolink="true" -->
 
-- [What problem does this script solve?](#what-problem-does-this-script-solve)
 - [More goodies](#more-goodies)
 - [What's supported](#whats-supported)
 - [Install](#install)
@@ -31,6 +30,7 @@ the script to install additional tools.
 - [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
 - [Check the Node installation](#check-the-node-installation)
 - [Next steps](#next-steps)
+- [What problem does this script solve?](#what-problem-does-this-script-solve)
 - [Why chruby and not RVM or rbenv?](#why-chruby-and-not-rvm-or-rbenv)
 - [What it sets up](#what-it-sets-up)
 - [Customize in `~/.laptop.local` and `~/Brewfile.local`](#customize-in-~laptoplocal-and-~brewfilelocal)
@@ -40,32 +40,6 @@ the script to install additional tools.
     - [Public domain](#public-domain)
 
 <!-- /MarkdownTOC -->
-
-
-## What problem does this script solve?
-Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)" in your favorite search engine, and you will see pages and pages of results.
-
-To make matters worse, the vast majority of suggestions are bad advice and
-incomplete. The reason for the error message above is because people are trying
-to install gems using the version of Ruby that comes pre-installed by Apple.
-That error message is there for a reason: you should not modify macOS system
-files. A common suggestion is to bypass that security protection by using
-`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/) and can cause issues down the line that are hard to undo.
-
-The recommended way of using Ruby on a Mac is to install a newer (the
-macOS version is often outdated and is only updated during a major release),
-separate version in a different folder than the one that comes by default on
-macOS. The best and most flexible way to do that is with a Ruby manager. The
-most popular ones are: RVM, rbenv, chruby, and asdf. I have chosen `chruby` in this script. See [below](#Why-chruby-and-not-RVM-or-rbenv) for my reasons. There are different ways to
-install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/), such as `.bash_profile` or `.zshrc`.
-
-When attempting to install and configure a Ruby manager manually, it's easy to
-miss or fumble a step due to human error or incomplete or outdated instructions. 
-
-Since all of the steps are automatable, **the best and most reliable way to set up Ruby on a Mac is to run this script**. I test it regularly on my spare laptop where I delete the hard drive and install fresh versions of macOS. If you've already attempted to set up a development environment on your Mac, and you run into issues with my script, please read through the entire [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) section, which includes a link to troubleshoot issues. If that doesn't help, feel free to open an issue, and I will do my best to help you.
-
-Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
 
 ## More goodies
 
@@ -100,18 +74,23 @@ Supported shells:
 - fish (see the note at the bottom of this README)
 
 ## Install
+
 **IMPORTANT! CHECK ALL OF THE ITEMS BELOW BEFORE AND AFTER RUNNING THE SCRIPT!** 
 
 ### Check prerequisites
+
 Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) first.
 
 ### If you are on an M1 Mac, do not use Rosetta
+
 Homebrew works natively on M1 Macs. Make sure that whatever terminal app you use is not in Rosetta mode. Read my guide on [installing Ruby on Apple Silicon](https://www.moncefbelyamani.com/how-to-install-homebrew-and-ruby-on-a-mac-with-the-m1-apple-silicon-chip/#how-to-tell-if-you-are-using-terminal-in-rosetta-mode) for more details.
 
 ### Quit and relaunch Terminal after running my script
+
 I mention this several times in this README, as well as when the script finishes successfully, but I'll say it again. For the changes to take effect, you have to "refresh" your terminal. The best way is to quit and relaunch it.
 
 ### Now on to the installation
+
 Begin by opening the Terminal application on your Mac. The easiest way to open
 an application in macOS is to search for it via [Spotlight]. The default
 keyboard shortcut for invoking Spotlight is `command-Space`. Once Spotlight
@@ -166,7 +145,7 @@ To verify that the Ruby environment is properly configured, run these commands:
 ruby -v
 ```
 
-This should show `ruby 2.7.4` or `ruby 3.0.2`. If not, try switching manually to 2.7.4:
+This should show `ruby 2.7.4` or `ruby 3.1.0`. If not, try switching manually to 2.7.4:
 
 ```shell
 chruby 2.7.4
@@ -200,9 +179,9 @@ Similarly to Rails, [creating a new Jekyll site](https://www.moncefbelyamani.com
 
 ## How to switch between Ruby versions and install different versions
 
-The first time you run the script, it will install both the latest Ruby (currently 3.0.2) as well as Ruby 2.7.4, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer 3.x versions, and if it finds one, it will install it. You will still have Ruby 2.7.4. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
+The first time you run the script, it will install both the latest Ruby (currently 3.1.0) as well as Ruby 2.7.4, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer 3.x versions, and if it finds one, it will install it. You will still have Ruby 2.7.4. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
 
-**Ruby 3.0 is still very new, so it's not yet fully compatible with gems like Rails or Jekyll. So, before you create a new Rails app or Jekyll site, make sure you're using Ruby 2.7.4. Keep reading for instructions.**
+**Ruby 3.1.0 is not yet fully compatible with the latest versions of Rails or Jekyll. So, for now I recommend using Ruby 2.7.4. For Rails 7, you should be able to use Ruby 3.0.3. Keep reading for instructions.**
 
 To check if you have Ruby 2.7.4 installed, run this command:
 
@@ -235,7 +214,7 @@ Another highly-recommended way to automatically switch between versions is to ad
 4. `cd` into your project
 5. Verify that `ruby -v` shows `2.7.4p191`
 
-Note that gems only get installed in a specific version of Ruby at a time. If you installed jekyll in 3.0.2, and then you install 2.7.4 later, you'll have to install jekyll again in 2.7.4.
+Note that gems only get installed in a specific version of Ruby at a time. If you installed jekyll in 3.0.3, and then you install 2.7.4 later, you'll have to install jekyll again in 2.7.4.
 
 ## Check the Node installation
 
@@ -254,6 +233,32 @@ You should see various commands you can run with `nodenv`.
 ## Next steps
 
 The next thing you'll want to do after running the script is to [configure Git with your name, email, and preferred editor](https://www.moncefbelyamani.com/first-things-to-configure-before-using-git/).
+
+## What problem does this script solve?
+
+Installing Ruby and/or gems is a common source of confusion and frustration.
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)" in your favorite search engine, and you will see pages and pages of results.
+
+To make matters worse, the vast majority of suggestions are bad advice and
+incomplete. The reason for the error message above is because people are trying
+to install gems using the version of Ruby that comes pre-installed by Apple.
+That error message is there for a reason: you should not modify macOS system
+files. A common suggestion is to bypass that security protection by using
+`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/) and can cause issues down the line that are hard to undo.
+
+The recommended way of using Ruby on a Mac is to install a newer (the
+macOS version is often outdated and is only updated during a major release),
+separate version in a different folder than the one that comes by default on
+macOS. The best and most flexible way to do that is with a Ruby manager. The
+most popular ones are: RVM, rbenv, chruby, and asdf. I have chosen `chruby` in this script. See [below](#Why-chruby-and-not-RVM-or-rbenv) for my reasons. There are different ways to
+install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/), such as `.bash_profile` or `.zshrc`.
+
+When attempting to install and configure a Ruby manager manually, it's easy to
+miss or fumble a step due to human error or incomplete or outdated instructions. 
+
+Since all of the steps are automatable, **the best and most reliable way to set up Ruby on a Mac is to run this script**. I test it regularly on my spare laptop where I delete the hard drive and install fresh versions of macOS. If you've already attempted to set up a development environment on your Mac, and you run into issues with my script, please read through the entire [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) section, which includes a link to troubleshoot issues. If that doesn't help, feel free to open an issue, and I will do my best to help you.
+
+Read more in my [definitive guide to installing Ruby gems on a Mac](https://www.moncefbelyamani.com/the-definitive-guide-to-installing-ruby-gems-on-a-mac/).
 
 ## Why chruby and not RVM or rbenv?
 
