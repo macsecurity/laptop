@@ -181,7 +181,7 @@ Similarly to Rails, [creating a new Jekyll site](https://www.moncefbelyamani.com
 
 The first time you run the script, it will install both the latest Ruby (currently 3.1.0) as well as Ruby 2.7.4, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer 3.x versions, and if it finds one, it will install it. You will still have Ruby 2.7.4. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
 
-**Ruby 3.1.0 is not yet fully compatible with the latest versions of Rails or Jekyll. So, for now I recommend using Ruby 2.7.4. For Rails 7, you should be able to use Ruby 3.0.3. Keep reading for instructions.**
+**Ruby 3.1.0 is not yet fully compatible with the latest version of Jekyll. So, for now I recommend using Ruby 2.7.4. Keep reading for instructions.**
 
 To check if you have Ruby 2.7.4 installed, run this command:
 
