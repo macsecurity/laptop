@@ -168,7 +168,7 @@ folder. Read through it to see if you can debug the issue yourself.
 
 **Note that this free script does not include support. I am working on a premium version of the script that will automatically handle all the common errors that have been reported over the years.**
 
-**The premium script is almost ready, and if you need help right away, you can help me test it by [booking a $10 session with me](https://savvycal.com/monfresh/dev-setup).**
+**The premium script is almost ready, and if you need help right away, you can help me test it by [booking a $10 session with me](https://savvycal.com/monfresh/dev-setup). This will give you lifetime access to the premium script.**
 
 ## How to tell if the script worked
 
