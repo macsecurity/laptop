@@ -144,10 +144,6 @@ trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
 set -e -o pipefail
 
-if [ ! -d "$HOME/.bin/" ]; then
-  mkdir "$HOME/.bin"
-fi
-
 case "$SHELL" in
   */zsh) :
     create_zshrc_and_set_it_as_shell_file
@@ -165,7 +161,7 @@ brew_is_installed() {
 }
 
 gem_install_or_update() {
-  if gem list "$1" | grep "^$1 ("; then
+  if gem list "$1" --installed > /dev/null; then
     fancy_echo "Updating %s ..." "$1"
     gem update "$@"
   else
@@ -199,11 +195,6 @@ if [[ $SHELL == *fish ]]; then
   append_to_file "$shell_file" "alias laptop='bash (curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop | psub)'"
 else
   append_to_file "$shell_file" "alias laptop='bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)'"
-fi
-
-if [[ ! $SHELL == *fish ]]; then
-  # shellcheck disable=SC2016
-  append_to_file "$shell_file" 'export PATH="$HOME/.bin:$PATH"'
 fi
 
 fancy_echo 'Welcome to the monfresh laptop script!'
