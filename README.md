@@ -109,11 +109,11 @@ internet connection).
 
 ### Check prerequisites
 
-Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites?utm_source=laptop-repo) first.
+Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/?utm_source=laptop-repo#prerequisites) first.
 
 ### If you are on an M1 Mac, do not use Rosetta
 
-Make sure that whatever terminal app you use is not in Rosetta mode. Read my guide on [installing Ruby on Apple Silicon](https://www.moncefbelyamani.com/how-to-install-homebrew-and-ruby-on-a-mac-with-the-m1-apple-silicon-chip/#how-to-tell-if-you-are-using-terminal-in-rosetta-mode?utm_source=laptop-repo) for more details.
+Make sure that whatever terminal app you use is not in Rosetta mode. Read my guide on [installing Ruby on Apple Silicon](https://www.moncefbelyamani.com/how-to-install-homebrew-and-ruby-on-a-mac-with-the-m1-apple-silicon-chip/?utm_source=laptop-repo#how-to-tell-if-you-are-using-terminal-in-rosetta-mode) for more details.
 
 ### Quit and relaunch Terminal after running my script
 
