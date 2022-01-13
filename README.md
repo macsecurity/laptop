@@ -26,11 +26,8 @@ the script to install additional tools.
         - [The minimal installation for those that only want Ruby and nothing else](#the-minimal-installation-for-those-that-only-want-ruby-and-nothing-else)
 - [Debugging script failures](#debugging-script-failures)
 - [How to tell if the script worked](#how-to-tell-if-the-script-worked)
-- [How to create a new Rails app](#how-to-create-a-new-rails-app)
-- [How to create a new Jekyll site](#how-to-create-a-new-jekyll-site)
 - [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
 - [Check the Node installation](#check-the-node-installation)
-- [Next steps](#next-steps)
 - [Customize in `~/.laptop.local` and `~/Brewfile.local`](#customize-in-~laptoplocal-and-~brewfilelocal)
 - [How to manage background services \(such as Postgres\)](#how-to-manage-background-services-such-as-postgres)
 - [Note about the fish shell](#note-about-the-fish-shell)
@@ -42,7 +39,7 @@ the script to install additional tools.
 
 ## More goodies
 
-- Join the 2803+ people on my list who are becoming confident coders through my [coding guides](https://www.moncefbelyamani.com/newsletter) and exclusive tutorials and courses.
+- Join the 2800+ readers of my [newsletter](https://www.moncefbelyamani.com/newsletter?utm_source=laptop-repo) who are learning something new in every issue. I write actionable guides about coding, and my favorite **mental models, books, tools, and life hacks** that I use to improve continuously. I focus on topics such as **automation, productivity, behavorial science, writing, and marketing**.
 
 ## What's supported
 
@@ -112,11 +109,11 @@ internet connection).
 
 ### Check prerequisites
 
-Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) first.
+Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites?utm_source=laptop_repo) first.
 
 ### If you are on an M1 Mac, do not use Rosetta
 
-Homebrew works natively on M1 Macs. Make sure that whatever terminal app you use is not in Rosetta mode. Read my guide on [installing Ruby on Apple Silicon](https://www.moncefbelyamani.com/how-to-install-homebrew-and-ruby-on-a-mac-with-the-m1-apple-silicon-chip/#how-to-tell-if-you-are-using-terminal-in-rosetta-mode) for more details.
+Make sure that whatever terminal app you use is not in Rosetta mode. Read my guide on [installing Ruby on Apple Silicon](https://www.moncefbelyamani.com/how-to-install-homebrew-and-ruby-on-a-mac-with-the-m1-apple-silicon-chip/#how-to-tell-if-you-are-using-terminal-in-rosetta-mode?utm_source=laptop-repo) for more details.
 
 ### Quit and relaunch Terminal after running my script
 
@@ -166,9 +163,17 @@ convenience by typing `laptop` and pressing `return` in your Terminal.
 Your last `laptop` run will be saved to a file called `laptop.log` in your home
 folder. Read through it to see if you can debug the issue yourself.
 
-**Note that this free script does not include support. I am working on a premium version of the script that will automatically handle all the common errors that have been reported over the years.**
+**Note that this free script does not include support.**
 
-**The premium script is almost ready, and if you need help right away, you can help me test it by [booking a $10 session with me](https://savvycal.com/monfresh/dev-setup). This will give you lifetime access to the premium script.**
+If you get errors that you can't fix on your own, you can try my premium script.
+
+**The premium version is guaranteed to end your Ruby troubles, or I will personally fix it for you.**
+
+The premium script will be ready soon (most likely end of January 2022), but you can get early access to it at a 55% discount to help me test it.
+
+**It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates.**
+
+To get the premium script, [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) so we can test it together.
 
 ## How to tell if the script worked
 
@@ -203,14 +208,6 @@ This should point to the `.rubies` directory in your home folder. For example:
 ```
 /Users/monfresh/.rubies/ruby-2.7.4/bin/ruby
 ```
-
-## How to create a new Rails app
-
-Once you've installed the script successfully and restarted your terminal, [creating a new Rails app](https://www.moncefbelyamani.com/how-to-install-rails-and-create-a-new-rails-app-on-a-mac-the-easy-way/) takes just 3 more steps.
-
-## How to create a new Jekyll site
-
-Similarly to Rails, [creating a new Jekyll site](https://www.moncefbelyamani.com/how-to-install-jekyll-on-a-mac-the-easy-way/#create-a-new-jekyll-site) is just as easy.
 
 ## How to switch between Ruby versions and install different versions
 
@@ -264,10 +261,6 @@ You should see `v16.13.0` or later listed
 nodenv help
 ```
 You should see various commands you can run with `nodenv`.
-
-## Next steps
-
-The next thing you'll want to do after running the script is to [configure Git with your name, email, and preferred editor](https://www.moncefbelyamani.com/first-things-to-configure-before-using-git/).
 
 ## Customize in `~/.laptop.local` and `~/Brewfile.local`
 
@@ -376,30 +369,32 @@ See this pull request for more information: https://github.com/JeanMertz/chruby-
 ## What problem does this script solve?
 
 Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/)" in your favorite search engine, and you will see pages and pages of results.
+Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/?utm_source=laptop-repo)" in your favorite search engine, and you will see pages and pages of results.
 
 To make matters worse, the vast majority of suggestions are bad advice and
 incomplete. The reason for the error message above is because people are trying
 to install gems using the version of Ruby that comes pre-installed by Apple.
 That error message is there for a reason: you should not modify macOS system
 files. A common suggestion is to bypass that security protection by using
-`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/) and can cause issues down the line that are hard to undo.
+`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/?utm_source=laptop-repo) and can cause issues down the line that are hard to undo.
 
 The recommended way of using Ruby on a Mac is to install a newer (the
 macOS version is often outdated and is only updated during a major release),
 separate version in a different folder than the one that comes by default on
 macOS. The best and most flexible way to do that is with a Ruby manager. The
 most popular ones are: RVM, rbenv, chruby, and asdf. I have chosen `chruby` in this script. See [below](#Why-chruby-and-not-RVM-or-rbenv) for my reasons. There are different ways to
-install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/), such as `.bash_profile` or `.zshrc`.
+install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/?utm_source=laptop-repo), such as `.bash_profile` or `.zshrc`.
 
 When attempting to install and configure a Ruby manager manually, it's easy to
 miss or fumble a step due to human error or incomplete or outdated instructions. 
 
 Since all of the steps are automatable, **the best and most reliable way to set up Ruby on a Mac is to run this script**. I test it regularly on my spare laptop where I delete the hard drive and install fresh versions of macOS. 
 
-If you've already attempted to set up a development environment on your Mac, and you run into issues with my script, please read through the entire [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites) section. 
+**If you've already attempted to set up a development environment on your Mac, and you run into issues with my script that you can't figure out yourself, you can buy the premium version of my script. It detects all known issues and installs Ruby in a clean development environment.**
 
-If that doesn't help, you can [booking a $10 session with me](https://savvycal.com/monfresh/dev-setup) to help me test the premium version of the script that will automatically handle all the common errors that have been reported over the years.
+**The premium script is not quite ready yet, but you can get early access to it at a 55% discount to help me test it. It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates.**
+
+ You can [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) to get access to the premium script and we can test it together.
 
 ## Why chruby and not RVM or rbenv?
 
