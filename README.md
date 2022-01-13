@@ -109,7 +109,7 @@ internet connection).
 
 ### Check prerequisites
 
-Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites?utm_source=laptop_repo) first.
+Make sure your computer meets all [prerequisites](https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/#prerequisites?utm_source=laptop-repo) first.
 
 ### If you are on an M1 Mac, do not use Rosetta
 
