@@ -351,3 +351,10 @@ fancy_echo 'If you found this script valuable, join the 2800+ people on my list'
 echo "who are becoming confident coders:"
 fancy_echo "https://www.moncefbelyamani.com/newsletter"
 echo " "
+
+if [ -z "${SKIP_SURVEY:-}" ]; then
+  open https://www.moncefbelyamani.com/post-script-survey/
+fi
+
+append_to_file "$shell_file" "# The export SKIP_SURVEY=true line below was added by Moncef's laptop script to avoid showing you the survey more than once."
+append_to_file "$shell_file" "export SKIP_SURVEY=true"
