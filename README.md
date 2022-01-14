@@ -181,7 +181,7 @@ The premium script will be ready soon (most likely end of January 2022), but you
 
 - A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
 
-To get the premium script, [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) so we can test it together.
+To get the premium script, [book a Zoom session with me](https://savvycal.com/monfresh/early-access) so we can test it together.
 
 ## How to tell if the script worked
 
@@ -410,7 +410,7 @@ Since all of the steps are automatable, **the best and most reliable way to set 
 
 - A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
 
- You can [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) to get access to the premium script and we can test it together.
+ You can [book a Zoom session with me](https://savvycal.com/monfresh/early-access) to get access to the premium script and we can test it together.
 
 ## Why chruby and not RVM or rbenv?
 
