@@ -171,7 +171,15 @@ If you get errors that you can't fix on your own, you can try my premium script.
 
 The premium script will be ready soon (most likely end of January 2022), but you can get early access to it at a 55% discount to help me test it.
 
-**It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates.**
+**It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates and these bonuses:**
+
+- Video course that teaches you the essentials you need to master for coding on a Mac. You'll understand exactly why you've been having trouble installing Ruby, how to confidently troubleshoot errors going forward, and how to keep your development environment up to date.
+
+- Terminal shortcuts cheatsheet to speed up your workflow.
+
+- A comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby.
+
+- A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
 
 To get the premium script, [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) so we can test it together.
 
@@ -392,7 +400,15 @@ Since all of the steps are automatable, **the best and most reliable way to set 
 
 **If you've already attempted to set up a development environment on your Mac, and you run into issues with my script that you can't figure out yourself, you can buy the premium version of my script. It detects all known issues and installs Ruby in a clean development environment.**
 
-**The premium script is not quite ready yet, but you can get early access to it at a 55% discount to help me test it. It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates.**
+**The premium script is not quite ready yet, but you can get early access to it at a 55% discount to help me test it. It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates and these bonuses:**
+
+- Video course that teaches you the essentials you need to master for coding on a Mac. You'll understand exactly why you've been having trouble installing Ruby, how to confidently troubleshoot errors going forward, and how to keep your development environment up to date.
+
+- Terminal shortcuts cheatsheet to speed up your workflow.
+
+- A comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby.
+
+- A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
 
  You can [book a Zoom session with me](https://savvycal.com/monfresh/b12933f7) to get access to the premium script and we can test it together.
 
