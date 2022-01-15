@@ -199,57 +199,6 @@ fi
 
 fancy_echo 'Welcome to the monfresh laptop script!'
 fancy_echo 'You should be and up and running with a working Ruby environment in a few minutes.'
-fancy_echo 'The following lines are to help me debug any issues:'
-fancy_echo "=================Start of debugging====================="
-fancy_echo "Current shell: $SHELL"
-fancy_echo "Current PATH: $PATH"
-# fancy_echo "xcode-select path:"
-# xcode-select -p
-
-if command -v rbenv >/dev/null; then
-  fancy_echo "rbenv is installed"
-fi
-if command -v rvm >/dev/null; then
-  fancy_echo "rvm is installed"
-fi
-if command -v asdf >/dev/null; then
-  fancy_echo "asdf is installed"
-fi
-
-fancy_echo "macOS version:"
-sw_vers
-
-fancy_echo "Mac model:"
-sysctl hw.model
-
-fancy_echo "Mac CPU:"
-sysctl -n machdep.cpu.brand_string
-
-fancy_echo "CPU architecture:"
-uname -m
-
-fancy_echo "shell file contents:"
-cat "$shell_file"
-fancy_echo "End of shell file contents."
-
-if [ -f "$HOME/.zprofile" ]; then
-  fancy_echo ".zprofile contents:"
-  cat "$HOME/.zprofile"
-  fancy_echo "End of .zprofile contents."
-fi
-
-fancy_echo "gem env:"
-gem env
-fancy_echo "End of gem env."
-
-fancy_echo "Ruby installed with Homebrew?"
-if brew_is_installed "ruby"; then
-  echo "yes"
-else
-  echo "no"
-fi
-
-fancy_echo "=================End of debugging====================="
 
 install_or_update_homebrew
 
