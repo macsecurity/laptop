@@ -1,8 +1,0 @@
-brew 'redis'
-
-cask 'firefox'
-cask 'flux'
-cask 'github'
-cask 'iterm2'
-cask 'sublime-text'
-cask 'visual-studio-code'

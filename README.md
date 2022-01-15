@@ -4,11 +4,9 @@
 
 Laptop is a script that will set up a complete Ruby web development environment on your Mac, including Node, Postgres, Rails, and Jekyll. You also have the option to skip those web dev tools and only install the minimum required to use Ruby.
 
-It can be run multiple times on the same machine safely. It installs,
-upgrades, or skips packages based on what is already installed on the machine.
+You can safely run it over and over on the same computer. And because it only installs what's not already there, it runs quickly once everything is installed. The best part is that it will automatically upgrade tools if it finds a newer version.
 
-You can also easily [customize](#customize-in-laptoplocal-and-brewfilelocal)
-the script to install additional tools.
+That's why I recommend running the script about once a week, which is what I do to keep my development environment up to date and secure.
 
 ## Table of Contents
 
@@ -28,7 +26,6 @@ the script to install additional tools.
 - [How to tell if the script worked](#how-to-tell-if-the-script-worked)
 - [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
 - [Check the Node installation](#check-the-node-installation)
-- [Customize in `~/.laptop.local` and `~/Brewfile.local`](#customize-in-~laptoplocal-and-~brewfilelocal)
 - [How to manage background services \(such as Postgres\)](#how-to-manage-background-services-such-as-postgres)
 - [Note about the fish shell](#note-about-the-fish-shell)
 - [What problem does this script solve?](#what-problem-does-this-script-solve)
@@ -100,9 +97,6 @@ Supported shells:
 [ruby-install]: https://github.com/postmodern/ruby-install
 [yarn]: https://yarnpkg.com
 
-It should take less than 15 minutes to install (depends on your machine and
-internet connection).
-
 ## Install
 
 **IMPORTANT! CHECK ALL OF THE ITEMS BELOW BEFORE AND AFTER RUNNING THE SCRIPT!** 
@@ -167,21 +161,19 @@ folder. Read through it to see if you can debug the issue yourself.
 
 If you get errors that you can't fix on your own, you can try my premium script.
 
-**The premium version is guaranteed to end your Ruby troubles, or I will personally fix it for you.**
+My premium script includes the following features:
 
-The premium script will be ready soon (most likely end of January 2022), but you can get early access to it at a 55% discount to help me test it.
+- guaranteed successful installation or I'll fix it for you personally over Zoom
+- installs everything needed for Rails
+- installs everything needed for Jekyll
+- speeds up gem installation
+- support for the fish shell
+- customizable so you can add your own tools and Mac apps that you can automatically keep updated with the script
+- detailed video walkthrough
+- comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby
+- includes support from me 
 
-**It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates and these bonuses:**
-
-- Video course that teaches you the essentials you need to master for coding on a Mac. You'll understand exactly why you've been having trouble installing Ruby, how to confidently troubleshoot errors going forward, and how to keep your development environment up to date.
-
-- Terminal shortcuts cheatsheet to speed up your workflow.
-
-- A comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby.
-
-- A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
-
-To get the premium script, [book a Zoom session with me](https://savvycal.com/monfresh/early-access) so we can test it together. You'll need a free GitHub account if you don't already have one so you can access my private repo.
+If you're interested, [sign up for my waiting list](https://www.moncefbelyamani.com/ruby-script/?utm_source=laptop-repo) to get a 55% discount, and I'll let you know when it's ready. I'm shooting for the end of January.
 
 ## How to tell if the script worked
 
@@ -193,10 +185,10 @@ To verify that the Ruby environment is properly configured, run these commands:
 ruby -v
 ```
 
-This should show `ruby 2.7.4` or `ruby 3.1.0`. If not, try switching manually to 2.7.4:
+This should show `ruby 3.1.0` or later. **If not, try quitting and relaunching Terminal.** Then try switching manually to 3.1.0 (or the latest version that was installed):
 
 ```shell
-chruby 2.7.4
+chruby 3.1.0
 ```
 
 and check the version to double check:
@@ -205,56 +197,38 @@ and check the version to double check:
 ruby -v
 ```
 
-Then check where Ruby is installed:
+To list all ruby versions currently installed:
 
 ```shell
-which ruby
-```
-
-This should point to the `.rubies` directory in your home folder. For example:
-
-```
-/Users/monfresh/.rubies/ruby-2.7.4/bin/ruby
+chruby
 ```
 
 ## How to switch between Ruby versions and install different versions
 
-The first time you run the script, it will install both the latest Ruby (currently 3.1.0) as well as Ruby 2.7.4, which is the version that is compatible with most gems at the moment. If you run the script again, it will check for newer 3.x versions, and if it finds one, it will install it. You will still have Ruby 2.7.4. That's the advantage of using version managers like `chruby`. You can have many different versions installed at the same time and you can switch between them.
-
-**Ruby 3.1.0 is not yet fully compatible with the latest version of Jekyll. So, for now I recommend using Ruby 2.7.4. Keep reading for instructions.**
-
-To check if you have Ruby 2.7.4 installed, run this command:
+To install an additional version,
+run `ruby-install` followed by `ruby-` and the desired version. For example:
 
 ```shell
-find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.4'
-```
-If nothing is returned, then you should install it:
-
-```shell
-ruby-install ruby-2.7.4
+ruby-install ruby-2.7.5
 ```
 
 To switch to this newly-installed version, run `chruby` followed by the version. For example:
 
 ```shell
-chruby 2.7.4
+chruby 2.7.5
 ```
-You should run `chruby 2.7.4` before you start any new project to make sure you are using the correct version of Ruby.
 
-Another highly-recommended way to automatically switch between versions is to add a `.ruby-version` file in your Ruby project with the version number prefixed with `ruby-`, such as `ruby-2.7.4`. To test that this works:
+Then verify the version:
 
-1. `cd` into your Ruby project, such as your Rails app or Jekyll site
-2. First, check to see if the file already exists: `cat .ruby-version`. If not, then create it in the next step.
-2. Create a file called `.ruby-version` with `ruby-2.7.4` in it:
-    ```shell
-    echo 'ruby-2.7.4' >> .ruby-version
-    ```
-1. `cd` into a folder outside of your project, such as your home folder: `cd ~`
-2. Run `ruby -v`. It will probably say `2.6.3p62`, which is the Ruby that came preinstalled on your Mac.
-4. `cd` into your project
-5. Verify that `ruby -v` shows `2.7.4p191`
+```shell
+ruby -v
+```
 
-Note that gems only get installed in a specific version of Ruby at a time. If you installed jekyll in 3.0.3, and then you install 2.7.4 later, you'll have to install jekyll again in 2.7.4.
+**If this doesn't work, try quitting and restarting your terminal, then run chruby 2.7.5 again.**
+
+You should switch to the desired version before you start any new project to make sure you are using the correct version of Ruby.
+
+Note that gems only get installed separately in each version of Ruby. If you installed jekyll in 3.1.0, and then you install 2.7.5 later, you'll have to install jekyll again in 2.7.5.
 
 ## Check the Node installation
 
@@ -269,55 +243,6 @@ You should see `v16.13.0` or later listed
 nodenv help
 ```
 You should see various commands you can run with `nodenv`.
-
-## Customize in `~/.laptop.local` and `~/Brewfile.local`
-
-```sh
-# Go to your macOS user's root directory
-cd ~
-
-# Download the sample files to your computer
-curl --remote-name https://raw.githubusercontent.com/monfresh/laptop/master/.laptop.local
-curl --remote-name https://raw.githubusercontent.com/monfresh/laptop/master/Brewfile.local
-
-# open the files in your text editor
-open .laptop.local
-open Brewfile.local
-```
-
-Your `~/.laptop.local` is run at the end of the `mac` script.
-Put your customizations there. If you want to install additional
-tools or Mac apps with Homebrew, add them to your `~/Brewfile.local`.
-You can use the `.laptop.local` and `Brewfile.local` you downloaded
-above to get started. It lets you install the following tools and Mac apps:
-
-- [Firefox] for testing your Rails app on a browser other than Chrome or Safari
-- [Flux] for adjusting your Mac's display color so you can sleep better
-- [GitHub Desktop] for working with your repos using a GUI
-- [iTerm2] - an awesome replacement for the macOS Terminal
-- [Redis] for storing key-value data
-- [Sublime Text 3] - a solid and fast code editor
-- [Visual Studio Code] - Microsoft's popular code editor
-
-[firefox]: https://www.mozilla.org/en-US/firefox/new/
-[flux]: https://justgetflux.com/
-[github desktop]: https://desktop.github.com/
-[iterm2]: https://iterm2.com/
-[redis]: https://redis.io/
-[sublime text 3]: https://www.sublimetext.com/3
-[visual studio code]: https://code.visualstudio.com/
-
-Write your customizations such that they can be run safely more than once.
-See the `mac` script for examples.
-
-Laptop functions such as `fancy_echo`, and `gem_install_or_update` can be used
-in your `~/.laptop.local`.
-
-If you want to skip running `.laptop.local`, you can set the `SKIP_LOCAL` environment variable to `true` before running `laptop`:
-
-```shell
-SKIP_LOCAL=true laptop
-```
 
 ## How to manage background services (such as Postgres)
 
@@ -400,17 +325,21 @@ Since all of the steps are automatable, **the best and most reliable way to set 
 
 **If you've already attempted to set up a development environment on your Mac, and you run into issues with my script that you can't figure out yourself, you can buy the premium version of my script. It detects all known issues and installs Ruby in a clean development environment.**
 
-**The premium script is not quite ready yet, but you can get early access to it at a 55% discount to help me test it. It will be priced at $37 when it's released, but you can get it for $17 today, which will give you lifetime access to the script, including updates and these bonuses:**
+**The premium script is not quite ready yet, but you can get early access to it at a 55% discount..**
 
-- Video course that teaches you the essentials you need to master for coding on a Mac. You'll understand exactly why you've been having trouble installing Ruby, how to confidently troubleshoot errors going forward, and how to keep your development environment up to date.
+My premium script includes the following features:
 
-- Terminal shortcuts cheatsheet to speed up your workflow.
+- guaranteed successful installation or I'll fix it for you personally over Zoom
+- installs everything needed for Rails
+- installs everything needed for Jekyll
+- speeds up gem installation
+- support for the fish shell
+- customizable so you can add your own tools and Mac apps that you can automatically keep updated with the script
+- detailed video walkthrough
+- comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby
+- includes support from me 
 
-- A comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby.
-
-- A private community (either Discord or Slack. I haven't decided yet. Let me know if you prefer one over the other.)
-
- You can [book a Zoom session with me](https://savvycal.com/monfresh/early-access) to get access to the premium script and we can test it together. You'll need a free GitHub account if you don't already have one so you can access my private repo.
+If you're interested, [sign up for my waiting list](https://www.moncefbelyamani.com/ruby-script/?utm_source=laptop-repo) to get a 55% discount, and I'll let you know when it's ready. I'm shooting for the end of January.
 
 ## Why chruby and not RVM or rbenv?
 
@@ -431,5 +360,5 @@ Other folks who prefer `chruby`:
 
 ## Credits
 
-This script was originally inspired by [thoughbot's laptop](https://github.com/thoughtbot/laptop) script, but
+This script was originally inspired by the 2015 version of [thoughtbot's laptop](https://github.com/thoughtbot/laptop) script, but
 it works quite differently now.

@@ -54,11 +54,11 @@ create_fish_config_and_set_it_as_shell_file() {
 }
 
 apple_m1() {
-  sysctl -n machdep.cpu.brand_string | grep -q "Apple M1"
+  sysctl -n machdep.cpu.brand_string | grep "Apple M1"
 }
 
 rosetta() {
-  uname -m | grep -q "x86_64"
+  uname -m | grep "x86_64"
 }
 
 homebrew_installed_on_m1() {
@@ -160,7 +160,7 @@ brew_is_installed() {
   brew list -1 --formula | grep -Fqx "$1"
 }
 
-gem_install_or_update() {
+install_or_update_gem() {
   if gem list "$1" --installed > /dev/null; then
     fancy_echo "Updating %s ..." "$1"
     gem update "$@"
@@ -172,10 +172,6 @@ gem_install_or_update() {
 
 latest_installed_ruby() {
   find "$HOME/.rubies" -maxdepth 1 -name 'ruby-*' -print0 | sort -z | xargs -0 | grep -E -o '\d+\.\d+\.\d+' | tail -n1
-}
-
-ruby_2_7_4_is_installed() {
-  find "$HOME/.rubies" -maxdepth 1 -name 'ruby-2.7.4'
 }
 
 switch_to_ruby() {
@@ -218,7 +214,7 @@ else
 fi
 
 fancy_echo "Installing formulas and casks from the Brewfile ..."
-if brew bundle --file="$brewfile"; then
+if brew bundle --no-lock --file="$brewfile"; then
   fancy_echo "All formulas and casks were installed successfully."
 else
   fancy_echo "Some formulas or casks failed to install."
@@ -229,10 +225,9 @@ append_to_file "$HOME/.gemrc" 'gem: --no-document'
 
 check_processor_and_set_chruby_source_strings
 
-if command -v rbenv >/dev/null || command -v rvm >/dev/null; then
+if command -v rbenv >/dev/null || command -v rvm >/dev/null || command -v asdf; then
   fancy_echo 'We recommend chruby and ruby-install over RVM or rbenv.'
-  echo "Please uninstall RVM or rbenv, and remove any related lines from $shell_file, then run this script again."
-  echo "To uninstall RVM, run 'rvm implode'. To uninstall rbenv, follow the instructions here: https://github.com/rbenv/rbenv#uninstalling-rbenv"
+  echo "Please completely uninstall RVM, rbenv, or asdf then run this script again."
 else
   fancy_echo 'Checking if a newer version of Ruby is available...'
 
@@ -248,33 +243,26 @@ else
     fancy_echo 'You have the latest version of Ruby'
   fi
 
-  if ! [ "$(ruby_2_7_4_is_installed)" = "$HOME/.rubies/ruby-2.7.4" ]; then
-    fancy_echo "Installing Ruby 2.7.4 ..."
-    ruby-install ruby-2.7.4 -- --with-openssl-dir="$(brew --prefix openssl@1.1)"
-    configure_shell_file_for_chruby "2.7.4"
-    switch_to_ruby "2.7.4"
-  fi
-
-  configure_shell_file_for_chruby "2.7.4"
+  configure_shell_file_for_chruby "$(latest_installed_ruby)"
 fi
 
 fancy_echo 'Updating Rubygems...'
-switch_to_ruby "2.7.4"
+switch_to_ruby "$(latest_installed_ruby)"
 gem update --system --silent
 
 fancy_echo 'Installing or updating Bundler'
-gem_install_or_update 'bundler'
+install_or_update_gem 'bundler'
 
 fancy_echo "Configuring Bundler ..."
 number_of_cores=$(sysctl -n hw.ncpu)
 bundle config set --global jobs $((number_of_cores - 1))
 
 if [ -z "${ONLY_RUBY:-}" ]; then
-  fancy_echo 'Installing Rails'
-  gem install rails
+  fancy_echo 'Installing or updating Rails'
+  install_or_update_gem 'rails'
 
-  fancy_echo 'Installing Jekyll'
-  gem install jekyll
+  fancy_echo 'Installing or updating Jekyll'
+  install_or_update_gem 'jekyll'
 
   fancy_echo '...Finished Ruby installation checks.'
 
