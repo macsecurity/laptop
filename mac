@@ -41,18 +41,6 @@ create_bash_profile_and_set_it_as_shell_file() {
   shell_file="$HOME/.bash_profile"
 }
 
-create_fish_config_and_set_it_as_shell_file() {
-  if [ ! -d "$HOME/.config/fish" ]; then
-     mkdir "$HOME/.config/fish"
-  fi
-
-  if [ ! -f "$HOME/.config/fish/config.fish" ]; then
-    touch "$HOME/.config/fish/config.fish"
-  fi
-
-  shell_file="$HOME/.config/fish/config.fish"
-}
-
 apple_m1() {
   sysctl -n machdep.cpu.brand_string | grep "Apple M1"
 }
@@ -110,33 +98,22 @@ configure_shell_file_for_homebrew() {
 }
 
 configure_shell_file_for_homebrew_on_m1() {
-  if [[ $SHELL == *fish ]]; then
-    # shellcheck disable=SC2016
-    append_to_beginning_of_file "$shell_file" 'status --is-interactive; and eval (/opt/homebrew/bin/brew shellenv)'
-  else
-    # shellcheck disable=SC2016
-    append_to_file "$HOME/.zprofile" 'eval $(/opt/homebrew/bin/brew shellenv)'
-  fi
+  # shellcheck disable=SC2016
+  append_to_file "$HOME/.zprofile" 'eval $(/opt/homebrew/bin/brew shellenv)'
   eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 configure_shell_file_for_chruby() {
-  if [[ ! $SHELL == *fish ]]; then
-    append_to_file "$shell_file" "$chruby_source_string"
-    append_to_file "$shell_file" "$auto_source_string"
-  fi
+  append_to_file "$shell_file" "$chruby_source_string"
+  append_to_file "$shell_file" "$auto_source_string"
 
   local ruby_version="$1"
   append_to_file "$shell_file" "chruby ruby-$ruby_version"
 }
 
 configure_shell_file_for_nodenv() {
-  if [[ $SHELL == *fish ]]; then
-    append_to_file "$shell_file" 'status --is-interactive; and source (nodenv init -|psub)'
-  else
-    # shellcheck disable=SC2016
-    append_to_file "$shell_file" 'eval "$(nodenv init -)"'
-  fi
+  # shellcheck disable=SC2016
+  append_to_file "$shell_file" 'eval "$(nodenv init -)"'
 }
 
 # shellcheck disable=SC2154
@@ -151,14 +128,7 @@ case "$SHELL" in
   */bash)
     create_bash_profile_and_set_it_as_shell_file
     ;;
-  */fish)
-    create_fish_config_and_set_it_as_shell_file
-    ;;
 esac
-
-brew_is_installed() {
-  brew list -1 --formula | grep -Fqx "$1"
-}
 
 install_or_update_gem() {
   if gem list "$1" --installed > /dev/null; then
@@ -186,12 +156,7 @@ switch_to_ruby() {
   chruby "ruby-$ruby_version"
 }
 
-
-if [[ $SHELL == *fish ]]; then
-  append_to_file "$shell_file" "alias laptop='bash (curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop | psub)'"
-else
-  append_to_file "$shell_file" "alias laptop='bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)'"
-fi
+append_to_file "$shell_file" "alias laptop='bash <(curl -s https://raw.githubusercontent.com/monfresh/laptop/master/laptop)'"
 
 fancy_echo 'Welcome to the monfresh laptop script!'
 fancy_echo 'You should be and up and running with a working Ruby environment in a few minutes.'

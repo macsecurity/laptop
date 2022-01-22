@@ -26,10 +26,7 @@ That's why I recommend running the script about once a week, which is what I do 
 - [How to tell if the script worked](#how-to-tell-if-the-script-worked)
 - [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
 - [Check the Node installation](#check-the-node-installation)
-- [How to manage background services \(such as Postgres\)](#how-to-manage-background-services-such-as-postgres)
-- [Note about the fish shell](#note-about-the-fish-shell)
-- [What problem does this script solve?](#what-problem-does-this-script-solve)
-- [Why chruby and not RVM or rbenv?](#why-chruby-and-not-rvm-or-rbenv)
+- [Why chruby and not RVM, rbenv, or asdf?](#why-chruby-and-not-rvm-rbenv-or-asdf)
 - [Credits](#credits)
 
 <!-- /MarkdownTOC -->
@@ -64,7 +61,6 @@ Supported shells:
 
 - bash
 - zsh
-- fish (see the note at the bottom of this README)
 
 ## What it sets up
 
@@ -244,106 +240,9 @@ nodenv help
 ```
 You should see various commands you can run with `nodenv`.
 
-## How to manage background services (such as Postgres)
+## Why chruby and not RVM, rbenv, or asdf?
 
-The script does not automatically launch these services after installation
-because you might not need or want them to be running. With Homebrew Services,
-starting, stopping, or restarting these services is as easy as:
-
-```
-brew services start|stop|restart [name of service]
-```
-
-For example:
-
-```
-brew services start postgresql
-```
-
-To see a list of all installed services:
-
-```
-brew services list
-```
-
-To start all services at once:
-
-```
-brew services start --all
-```
-
-## Note about the fish shell
-
-`chruby` does not support the fish shell out of the box. There is a `chruby-fish` tool, but it has bugs that manipulate the `PATH` in a way it shouldn't. This can prevent using Nodenv if Node is already installed with Homebrew. This is just one example of issues you might run into and not understand why things aren't working. Until the issues are fixed, here is a workaround you can use:
-
-1. Uninstall chruby-fish if you have it: `brew uninstall chruby-fish`
-1. Clone this fork of `chruby-fish` to your computer:
-    ```shell
-    git clone https://github.com/bouk/chruby-fish/
-    ```
-2. Check out the `rewrite-fish` branch:
-    ```shell
-    cd chruby-fish
-    git checkout -b rewrite-fish origin/rewrite-fish
-    ```
-3. Run `make install`
-4. Remove any lines from your fish config file that `source` chruby, such as:
-    ```text
-    source /usr/local/share/chruby/chruby.fish
-    source /usr/local/share/chruby/auto.fish
-    source /usr/local/share/chruby/chruby.sh
-    source /usr/local/share/chruby/auto.sh
-    ```
-5. Quit and restart Terminal
-
-See this pull request for more information: https://github.com/JeanMertz/chruby-fish/pull/39
-
-
-## What problem does this script solve?
-
-Installing Ruby and/or gems is a common source of confusion and frustration.
-Search for `You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory` or "[command not found](https://www.moncefbelyamani.com/troubleshooting-command-not-found-in-the-terminal/?utm_source=laptop-repo)" in your favorite search engine, and you will see pages and pages of results.
-
-To make matters worse, the vast majority of suggestions are bad advice and
-incomplete. The reason for the error message above is because people are trying
-to install gems using the version of Ruby that comes pre-installed by Apple.
-That error message is there for a reason: you should not modify macOS system
-files. A common suggestion is to bypass that security protection by using
-`sudo`, which is [not safe](https://www.moncefbelyamani.com/why-you-should-never-use-sudo-to-install-ruby-gems/?utm_source=laptop-repo) and can cause issues down the line that are hard to undo.
-
-The recommended way of using Ruby on a Mac is to install a newer (the
-macOS version is often outdated and is only updated during a major release),
-separate version in a different folder than the one that comes by default on
-macOS. The best and most flexible way to do that is with a Ruby manager. The
-most popular ones are: RVM, rbenv, chruby, and asdf. I have chosen `chruby` in this script. See [below](#Why-chruby-and-not-RVM-or-rbenv) for my reasons. There are different ways to
-install these tools, and they all require additional configuration in your [shell startup file](https://www.moncefbelyamani.com/which-shell-am-i-using-how-can-i-switch/?utm_source=laptop-repo), such as `.bash_profile` or `.zshrc`.
-
-When attempting to install and configure a Ruby manager manually, it's easy to
-miss or fumble a step due to human error or incomplete or outdated instructions. 
-
-Since all of the steps are automatable, **the best and most reliable way to set up Ruby on a Mac is to run this script**. I test it regularly on my spare laptop where I delete the hard drive and install fresh versions of macOS. 
-
-**If you've already attempted to set up a development environment on your Mac, and you run into issues with my script that you can't figure out yourself, you can buy the premium version of my script. It detects all known issues and installs Ruby in a clean development environment.**
-
-**The premium script is not quite ready yet, but you can get early access to it at a 55% discount..**
-
-My premium script includes the following features:
-
-- guaranteed successful installation or I'll fix it for you personally over Zoom
-- installs everything needed for Rails
-- installs everything needed for Jekyll
-- speeds up gem installation
-- support for the fish shell
-- customizable so you can add your own tools and Mac apps that you can automatically keep updated with the script
-- detailed video walkthrough
-- comprehensive troubleshooting guide to fix the most common issues with Homebrew and Ruby
-- includes support from me 
-
-If you're interested, [sign up for my waiting list](https://www.moncefbelyamani.com/ruby-script/?utm_source=laptop-repo) to get a 55% discount, and I'll let you know when it's ready. I'm shooting for the end of January.
-
-## Why chruby and not RVM or rbenv?
-
-This script used `RVM` at first, but it started causing problems, so I switched to `chruby`, and haven't had any issues since. `chruby` is also the simplest, most reliable, and easiest to understand. I like that it does not do some of the things that other Ruby managers do:
+This script used `RVM` at first, back in 2015, but it started causing problems, so I switched to `chruby`, and haven't had any issues since. `chruby` is also the simplest, most reliable, and easiest to understand. I like that it does not do some of the things that other Ruby managers do:
 
 - Does not hook `cd`.
 - Does not install executable shims.
