@@ -27,7 +27,6 @@ That's why I recommend running the script about once a week, which is what I do 
 - [How to switch between Ruby versions and install different versions](#how-to-switch-between-ruby-versions-and-install-different-versions)
 - [Check the Node installation](#check-the-node-installation)
 - [Why chruby and not RVM, rbenv, or asdf?](#why-chruby-and-not-rvm-rbenv-or-asdf)
-- [Credits](#credits)
 
 <!-- /MarkdownTOC -->
 
@@ -255,9 +254,3 @@ Other folks who prefer `chruby`:
 - <https://kgrz.io/programmers-guide-to-choosing-ruby-version-manager.html>
 - <https://stevemarshall.com/journal/why-i-use-chruby/>
 - <https://linhmtran168.github.io/blog/2014/02/27/moving-from-rbenv-to-chruby/>
-
-
-## Credits
-
-This script was originally inspired by the 2015 version of [thoughtbot's laptop](https://github.com/thoughtbot/laptop) script, but
-it works quite differently now.

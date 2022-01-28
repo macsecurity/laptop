@@ -190,9 +190,10 @@ append_to_file "$HOME/.gemrc" 'gem: --no-document'
 
 check_processor_and_set_chruby_source_strings
 
-if command -v rbenv >/dev/null || command -v rvm >/dev/null || command -v asdf; then
-  fancy_echo 'We recommend chruby and ruby-install over RVM or rbenv.'
+if command -v rbenv >/dev/null || command -v rvm >/dev/null || command -v asdf >/dev/null; then
+  fancy_echo "We detected RVM, rbenv, or asdf on your computer. They are not compatible with chruby."
   echo "Please completely uninstall RVM, rbenv, or asdf then run this script again."
+  exit 1
 else
   fancy_echo 'Checking if a newer version of Ruby is available...'
 
